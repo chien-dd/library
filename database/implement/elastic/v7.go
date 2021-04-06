@@ -114,8 +114,8 @@ func (con *ModelV7) FindOffset(database, _ string, query db.Query, sorts []strin
 	return count, nil
 }
 
-func (con *ModelV7) FindScroll(database, _ string, query db.Query, sorts []string, size int, scrollID string, results interface{}) (string, int64, error) {
-	res, err := con.model.SearchScroll(database, query, sorts, size, scrollID)
+func (con *ModelV7) FindScroll(database, _ string, query db.Query, sorts []string, size int, scrollID, keepAlive string, results interface{}) (string, int64, error) {
+	res, err := con.model.SearchScroll(database, query, sorts, size, scrollID, keepAlive)
 	if err != nil || res.Hits == nil {
 		return "", 0, err
 	}

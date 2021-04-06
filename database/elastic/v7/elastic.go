@@ -87,14 +87,14 @@ func (con *ES) Scroll() *ScrollService {
 	return &ScrollService{helper: es.NewScrollService(con.model)}
 }
 
-func (ss *ScrollService) Search(index string, query database.Query, sorts []string, size int, scrollID string) (*es.SearchResult, error) {
+func (ss *ScrollService) Search(index string, query database.Query, sorts []string, size int, scrollID, keepAlive string) (*es.SearchResult, error) {
 	var q database.QueryES7
 	value, ok := reflect.ValueOf(query).Convert(reflect.TypeOf(q)).Interface().(database.QueryES7)
 	if !ok {
 		return nil, database.ReflectError
 	}
 	q = value
-	service := ss.helper.Index(index).Query(q).Size(size).ScrollId(scrollID).Scroll("10m")
+	service := ss.helper.Index(index).Query(q).Size(size).ScrollId(scrollID).Scroll(keepAlive)
 	if sorts != nil && len(sorts) > 0 {
 		for _, sort := range sorts {
 			if strings.HasPrefix(sort, "-") {
@@ -151,9 +151,9 @@ func (con *ES) Count(index string, query database.Query) (int64, error) {
 		Do(context.Background())
 }
 
-func (con *ES) SearchScroll(index string, query database.Query, sorts []string, site int, scrollID string) (*es.SearchResult, error) {
+func (con *ES) SearchScroll(index string, query database.Query, sorts []string, site int, scrollID, keepAlive string) (*es.SearchResult, error) {
 	// Success
-	return con.Scroll().Search(index, query, sorts, site, scrollID)
+	return con.Scroll().Search(index, query, sorts, site, scrollID, keepAlive)
 }
 
 func (con *ES) SearchPaging(index string, query database.Query, sorts []string, page, size int) (*es.SearchResult, error) {
