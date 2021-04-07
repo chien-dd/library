@@ -2,6 +2,7 @@ package elastic
 
 import (
 	"encoding/json"
+	"github.com/olivere/elastic/v7"
 	"reflect"
 
 	db "github.com/chien-dd/library/database"
@@ -24,6 +25,9 @@ func NewESV7(addr string) (*ModelV7, error) {
 func (con *ModelV7) Get(database, _, id string, result interface{}) error {
 	res, err := con.model.Get(database, id)
 	if err != nil {
+		if elastic.IsNotFound(err) {
+			return db.NotFoundError
+		}
 		return err
 	}
 	err = json.Unmarshal(res.Source, result)
