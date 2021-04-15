@@ -2,8 +2,9 @@ package redis
 
 import (
 	"encoding/json"
-	r "github.com/go-redis/redis"
 	"time"
+
+	r "github.com/go-redis/redis"
 )
 
 type StringsHelper struct {
@@ -20,7 +21,7 @@ func (con *StringsHelper) Get(key string) (string, error) {
 	return con.instance.Get(key).Result()
 }
 
-func (con *StringsHelper) PGet(key string, pointer interface{}) error {
+func (con *StringsHelper) GetS(key string, pointer interface{}) error {
 	bts, err := con.instance.Get(key).Bytes()
 	if err != nil {
 		return err
@@ -35,4 +36,13 @@ func (con *StringsHelper) PGet(key string, pointer interface{}) error {
 func (con *StringsHelper) Set(key, value string, expires time.Duration) error {
 	// Success
 	return con.instance.Set(key, value, expires).Err()
+}
+
+func (con *StringsHelper) SetS(key string, data interface{}, expires time.Duration) error {
+	bts, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	// Success
+	return con.Set(key, string(bts), expires)
 }
