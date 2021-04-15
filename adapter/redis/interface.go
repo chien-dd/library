@@ -4,6 +4,7 @@ import "time"
 
 type (
 	Redis interface {
+		Ping() error
 		String() Strings
 		Lists() Lists
 		Sets() Sets
@@ -13,8 +14,9 @@ type (
 
 	Strings interface {
 		Get(key string) (string, error)
-		PGet(key string, pointer interface{}) error
+		GetS(key string, pointer interface{}) error
 		Set(key, value string, expires time.Duration) error
+		SetS(key string, data interface{}, expires time.Duration) error
 	}
 
 	Lists interface {
