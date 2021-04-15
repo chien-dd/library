@@ -52,7 +52,7 @@ func NewClient(conf Config) (Redis, error) {
 		password: conf.Password,
 		db:       conf.Database,
 	}
-	if err := con.Ping().Err(); err != nil {
+	if err := con.Ping(); err != nil {
 		return nil, err
 	}
 	con.strings = NewStringsHelper(con)
@@ -60,7 +60,7 @@ func NewClient(conf Config) (Redis, error) {
 	return con, nil
 }
 
-func (con *Connector) Ping() *r.StatusCmd {
+func (con *Connector) Ping() error {
 	// Success
-	return con.instance.Ping()
+	return con.instance.Ping().Err()
 }
