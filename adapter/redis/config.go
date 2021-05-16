@@ -1,7 +1,7 @@
 package redis
 
 type Config struct {
-	Address  string
-	Password string
-	Database int
+	Address  string `json:"address" yaml:"address"`
+	Password string `json:"password" yaml:"password"`
+	Database int    `json:"database" yaml:"database"`
 }

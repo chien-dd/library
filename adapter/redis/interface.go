@@ -4,6 +4,8 @@ import "time"
 
 type (
 	Redis interface {
+		// Common
+		Exists(key string) bool
 		Ping() error
 		String() Strings
 		Lists() Lists
