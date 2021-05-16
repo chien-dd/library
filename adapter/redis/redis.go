@@ -64,3 +64,12 @@ func (con *Connector) Ping() error {
 	// Success
 	return con.instance.Ping().Err()
 }
+
+func (con *Connector) Exists(key string) bool {
+	// Success
+	res, err := con.instance.Exists(key).Result()
+	if res != 0 && err == nil {
+		return true
+	}
+	return false
+}
