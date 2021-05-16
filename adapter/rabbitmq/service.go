@@ -88,11 +88,6 @@ func (rb *Rabbit) Consume(queue string, auto bool, prefetchCount int, callback C
 			for msg := range d {
 				deliveries <- msg
 			}
-
-			clock.Sleep(delayReconnect)
-			if rb.channel.IsClosed() {
-				break
-			}
 		}
 	}()
 	// Process
