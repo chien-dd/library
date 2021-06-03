@@ -73,3 +73,11 @@ func (con *Connector) Exists(key string) bool {
 	}
 	return false
 }
+
+func (con *Connector) Delete(key string) bool {
+	// Success
+	if err := con.instance.Del(key).Err(); err != nil {
+		return false
+	}
+	return true
+}
