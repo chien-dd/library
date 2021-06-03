@@ -6,6 +6,7 @@ type (
 	Redis interface {
 		// Common
 		Exists(key string) bool
+		Delete(key string) bool
 		Ping() error
 		String() Strings
 		Lists() Lists
